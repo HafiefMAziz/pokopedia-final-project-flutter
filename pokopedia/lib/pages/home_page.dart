@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:pokopedia/controllers/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../styles/styles.dart';
 import '../widgets/category_icon.dart';
 import '../widgets/product_card.dart';
@@ -9,9 +11,7 @@ import '../widgets/subtitle.dart';
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
-    required this.accessToken,
   });
-  final String accessToken;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -30,7 +30,9 @@ class _HomePageState extends State<HomePage> {
   void getProducts() async {
     try {
       Response response = await get(Uri.parse("http://10.0.2.2:3000/products"),
-          headers: {'access_token': widget.accessToken});
+          headers: {
+            'access_token': Provider.of<UserNotifier>(context, listen: false).accessToken
+          });
       Map data = json.decode(response.body);
       setState(() {
         products = data["data"];
@@ -42,9 +44,10 @@ class _HomePageState extends State<HomePage> {
 
   void getCategories() async {
     try {
-      Response response = await get(
-          Uri.parse("http://10.0.2.2:3000/categories"),
-          headers: {'access_token': widget.accessToken});
+      Response response =
+          await get(Uri.parse("http://10.0.2.2:3000/categories"), headers: {
+        'access_token': Provider.of<UserNotifier>(context, listen: false).accessToken
+      });
       Map data = json.decode(response.body);
       setState(() {
         categories = data["data"];
