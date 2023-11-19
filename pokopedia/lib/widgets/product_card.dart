@@ -1,7 +1,4 @@
 import 'package:pokopedia/pages/detail_product_page.dart';
-import 'package:provider/provider.dart';
-
-import '../controllers/user_provider.dart';
 import '../widgets/subtitle.dart';
 import 'package:flutter/material.dart';
 
