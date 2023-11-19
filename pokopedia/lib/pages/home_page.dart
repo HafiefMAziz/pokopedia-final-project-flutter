@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:pokopedia/providers/product_provider.dart';
-import 'package:provider/provider.dart';
-
 import '../styles/styles.dart';
 import '../widgets/category_icon.dart';
 import '../widgets/product_card.dart';
@@ -59,87 +56,84 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductProvider>(builder: (context, productNotifier, child) {
-      print(productNotifier.products);
-      return Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Subtitle(
-                    text: "Categories",
-                    fontSize: 20,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        print("Navigate to All Categories");
-                      },
-                      child: Text(
-                        "View All >",
-                        style: TextStyle(
-                            color: red(), decoration: TextDecoration.underline),
-                      )),
-                ],
-              ),
+    return Scaffold(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Subtitle(
+                  text: "Categories",
+                  fontSize: 20,
+                ),
+                TextButton(
+                    onPressed: () {
+                      print("Navigate to All Categories");
+                    },
+                    child: Text(
+                      "View All >",
+                      style: TextStyle(
+                          color: red(), decoration: TextDecoration.underline),
+                    )),
+              ],
             ),
-            Container(
-              height: 80,
-              margin: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+          ),
+          Container(
+            height: 80,
+            margin: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                return CategoryIcon(
+                  name: categories[index]["name"],
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Subtitle(
+                  text: "Products",
+                  fontSize: 20,
+                ),
+                TextButton(
+                    onPressed: () {
+                      print("Navigate to All Products");
+                    },
+                    child: Text(
+                      "View All >",
+                      style: TextStyle(
+                          color: red(), decoration: TextDecoration.underline),
+                    )),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 300,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
+                itemCount: products.length,
                 itemBuilder: (context, index) {
-                  return CategoryIcon(
-                    name: categories[index]["name"],
+                  return ProductCard(
+                    id: products[index]["id"],
+                    name: products[index]["name"],
+                    price: products[index]["price"],
+                    imageUrl: products[index]["productImages"][0]["url"],
                   );
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Subtitle(
-                    text: "Products",
-                    fontSize: 20,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        print("Navigate to All Products");
-                      },
-                      child: Text(
-                        "View All >",
-                        style: TextStyle(
-                            color: red(), decoration: TextDecoration.underline),
-                      )),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 300,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return ProductCard(
-                      id: products[index]["id"],
-                      name: products[index]["name"],
-                      price: products[index]["price"],
-                      imageUrl: products[index]["productImages"][0]["url"],
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 }

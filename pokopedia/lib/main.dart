@@ -1,5 +1,3 @@
-import 'package:pokopedia/providers/product_provider.dart';
-
 import '../controllers/main_provider.dart';
 import '../pages/cart_page.dart';
 import '../pages/home_page.dart';
@@ -16,7 +14,6 @@ void main() {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => MainNotifier()), 
-        ChangeNotifierProvider(create: (context) => ProductProvider()), 
         ],
       child: MainPage()));
 }
