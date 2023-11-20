@@ -25,14 +25,14 @@ class ProductCard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: blueGreen(),
+            color: tropicalBlue(),
           ),
           borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
+              flex: 6,
               child: SizedBox(
                 width: double.infinity,
                 child: GestureDetector(
@@ -49,10 +49,17 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              color: lightBlue(),
-              child: Padding(
+            Expanded(
+              flex: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: lightBlue(),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(12),
+                  ),
+                ),
                 padding: const EdgeInsets.all(10.0),
+                width: double.infinity,
                 child: Column(children: [
                   Subtitle(
                     text: name,

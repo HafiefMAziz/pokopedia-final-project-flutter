@@ -5,9 +5,11 @@ class CategoryIcon extends StatelessWidget {
   const CategoryIcon({
     super.key,
     required this.name,
+    required this.iconUrl,
   });
 
   final String name;
+  final String iconUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +27,23 @@ class CategoryIcon extends StatelessWidget {
               color: lightBlue(),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.chair),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Image.network(
+                  color: navy(),
+                  iconUrl,
+                  fit: BoxFit.cover,
+                  ),
+            ),
           ),
         ),
         Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-            child: Text(
-              name,
-              style: TextStyle(color: navy(), fontWeight: FontWeight.w500),
-            ))
+          margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+          child: Text(
+            name,
+            style: TextStyle(color: navy(), fontWeight: FontWeight.w500),
+          ),
+        )
       ],
     );
   }

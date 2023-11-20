@@ -15,3 +15,7 @@ Color red() {
 Color blueGreen() {
   return const Color.fromARGB(255, 78, 110, 129);
 }
+
+Color tropicalBlue() {
+  return const Color.fromARGB(255, 208, 218,	238);
+}

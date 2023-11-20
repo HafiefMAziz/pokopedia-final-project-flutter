@@ -32,6 +32,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MainNotifier>(builder: (context, mainNotifier, child) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: const PokoAppBar(),
           body: pageList[mainNotifier.pageIndex],

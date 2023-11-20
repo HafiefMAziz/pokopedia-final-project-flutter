@@ -31,7 +31,8 @@ class _HomePageState extends State<HomePage> {
     try {
       Response response = await get(Uri.parse("http://10.0.2.2:3000/products"),
           headers: {
-            'access_token': Provider.of<UserNotifier>(context, listen: false).accessToken
+            'access_token':
+                Provider.of<UserNotifier>(context, listen: false).accessToken
           });
       Map data = json.decode(response.body);
       setState(() {
@@ -46,7 +47,8 @@ class _HomePageState extends State<HomePage> {
     try {
       Response response =
           await get(Uri.parse("http://10.0.2.2:3000/categories"), headers: {
-        'access_token': Provider.of<UserNotifier>(context, listen: false).accessToken
+        'access_token':
+            Provider.of<UserNotifier>(context, listen: false).accessToken
       });
       Map data = json.decode(response.body);
       setState(() {
@@ -72,14 +74,15 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                 ),
                 TextButton(
-                    onPressed: () {
-                      print("Navigate to All Categories");
-                    },
-                    child: Text(
-                      "View All >",
-                      style: TextStyle(
-                          color: red(), decoration: TextDecoration.underline),
-                    )),
+                  onPressed: () {
+                    print("Navigate to All Categories");
+                  },
+                  child: Text(
+                    "View All >",
+                    style: TextStyle(
+                        color: red(), decoration: TextDecoration.underline),
+                  ),
+                ),
               ],
             ),
           ),
@@ -92,6 +95,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 return CategoryIcon(
                   name: categories[index]["name"],
+                  iconUrl: categories[index]["icon"],
                 );
               },
             ),
@@ -106,14 +110,15 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                 ),
                 TextButton(
-                    onPressed: () {
-                      print("Navigate to All Products");
-                    },
-                    child: Text(
-                      "View All >",
-                      style: TextStyle(
-                          color: red(), decoration: TextDecoration.underline),
-                    )),
+                  onPressed: () {
+                    print("Navigate to All Products");
+                  },
+                  child: Text(
+                    "View All >",
+                    style: TextStyle(
+                        color: red(), decoration: TextDecoration.underline),
+                  ),
+                ),
               ],
             ),
           ),
