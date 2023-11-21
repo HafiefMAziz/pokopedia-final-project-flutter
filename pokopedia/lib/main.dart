@@ -1,3 +1,5 @@
+import 'package:pokopedia/provider/product_provider.dart';
+
 import '../controllers/main_provider.dart';
 import '../pages/cart_page.dart';
 import '../pages/home_page.dart';
@@ -9,12 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/user_provider.dart';
+import 'provider/category_provider.dart';
 import 'widgets/bottom_navbar.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => MainNotifier()),
     ChangeNotifierProvider(create: (context) => UserNotifier()),
+    ChangeNotifierProvider(create: (context) => ProductProvider()),
+    ChangeNotifierProvider(create: (context) => CategoryProvider()),
   ], child: MainPage()));
 }
 
