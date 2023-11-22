@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MainNotifier extends ChangeNotifier {
+class PageProvider extends ChangeNotifier {
   int _pageIndex = 0;
   int get pageIndex => _pageIndex;
 

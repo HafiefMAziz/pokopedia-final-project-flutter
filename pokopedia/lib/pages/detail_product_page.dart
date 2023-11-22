@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:pokopedia/provider/user_provider.dart';
 import 'package:pokopedia/styles/styles.dart';
 import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
-import '../controllers/user_provider.dart';
 import '../provider/product_provider.dart';
 import '../widgets/product_card.dart';
 
@@ -21,8 +21,8 @@ class _DetailProductState extends State<DetailProduct> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final String accessToken =
-          Provider.of<UserNotifier>(context, listen: false).accessToken;
+      final String? accessToken =
+          Provider.of<UserProvider>(context, listen: false).accessToken;
       Provider.of<ProductProvider>(context, listen: false)
           .getProducts(accessToken);
       Provider.of<ProductProvider>(context, listen: false)

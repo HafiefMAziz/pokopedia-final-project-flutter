@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokopedia/controllers/user_provider.dart';
 import 'package:pokopedia/provider/product_provider.dart';
+import 'package:pokopedia/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/category_provider.dart';
 import '../styles/styles.dart';
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final String accessToken = Provider.of<UserNotifier>(context, listen: false).accessToken;
+      final String? accessToken = Provider.of<UserProvider>(context, listen: false).accessToken;
       Provider.of<ProductProvider>(context, listen: false).getProducts(accessToken);
       Provider.of<CategoryProvider>(context, listen: false).getCategories(accessToken);
     });

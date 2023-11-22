@@ -1,4 +1,4 @@
-import '../controllers/main_provider.dart';
+import '../controllers/page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class BottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MainNotifier>(builder: (context, mainNotifier, child) {
+    return Consumer<PageProvider>(builder: (context, pageState, child) {
       return Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.vertical(top: Radius.elliptical(30, 30)),
@@ -25,38 +25,38 @@ class BottomNavbar extends StatelessWidget {
             children: [
               BottomNavIcon(
                 onTap: () {
-                  mainNotifier.pageIndex = 0;
+                  pageState.pageIndex = 0;
                 },
                 icon: Icons.home_rounded,
-                selected: mainNotifier.pageIndex == 0 ? true : false,
+                selected: pageState.pageIndex == 0 ? true : false,
               ),
               BottomNavIcon(
                 onTap: () {
-                  mainNotifier.pageIndex = 1;
+                  pageState.pageIndex = 1;
                 },
                 icon: Icons.category_rounded,
-                selected: mainNotifier.pageIndex == 1 ? true : false,
+                selected: pageState.pageIndex == 1 ? true : false,
               ),
               BottomNavIcon(
                 onTap: () {
-                  mainNotifier.pageIndex = 2;
+                  pageState.pageIndex = 2;
                 },
                 icon: Icons.shopping_bag,
-                selected: mainNotifier.pageIndex == 2 ? true : false,
+                selected: pageState.pageIndex == 2 ? true : false,
               ),
               BottomNavIcon(
                 onTap: () {
-                  mainNotifier.pageIndex = 3;
+                  pageState.pageIndex = 3;
                 },
                 icon: Icons.list_rounded,
-                selected: mainNotifier.pageIndex == 3 ? true : false,
+                selected: pageState.pageIndex == 3 ? true : false,
               ),
               BottomNavIcon(
                 onTap: () {
-                  mainNotifier.pageIndex = 4;
+                  pageState.pageIndex = 4;
                 },
                 icon: Icons.person,
-                selected: mainNotifier.pageIndex == 4 ? true : false,
+                selected: pageState.pageIndex == 4 ? true : false,
               ),
             ],
           ),
