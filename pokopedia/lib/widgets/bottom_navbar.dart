@@ -1,4 +1,4 @@
-import '../controllers/page_provider.dart';
+import '../provider/page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

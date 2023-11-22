@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../provider/category_provider.dart';
 import '../styles/styles.dart';
 import '../widgets/category_icon.dart';
+import '../widgets/loading.dart';
 import '../widgets/product_card.dart';
 import '../widgets/subtitle.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -70,13 +71,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return loadingCategory
-                      ? Container(
-                          margin: const EdgeInsets.all(15),
-                          child: LoadingAnimationWidget.twoRotatingArc(
-                            color: navy(),
-                            size: 80,
-                          ),
-                        )
+                      ? const PokoLoading(size: 80,)
                       : CategoryIcon(
                           name: categories[index].name,
                           iconUrl: categories[index].icon,
@@ -138,3 +133,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:pokopedia/controllers/page_provider.dart';
+import 'package:pokopedia/provider/page_provider.dart';
 import 'package:pokopedia/pages/login_page.dart';
 import 'package:pokopedia/provider/product_provider.dart';
 

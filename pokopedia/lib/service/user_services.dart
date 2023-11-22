@@ -24,12 +24,30 @@ class UserService {
           ),
         };
         return result;
-      }else if (response.statusCode == 500){
+      } else if (response.statusCode == 500) {
         return json;
       }
       throw "Error Login Service";
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<dynamic> register(username, password, fullname, email, address) async {
+    try {
+      Response response =
+          await post(Uri.parse("http://10.0.2.2:3000/users/register"), body: {
+        "username": username,
+        "email": email,
+        "password": password,
+        "fullname": fullname,
+        "address": address,
+      });
+      final json = jsonDecode(response.body);
+      print(json);
+      return json;
+    } catch (e) {
+      throw "Error Register Service $e";
     }
   }
 }

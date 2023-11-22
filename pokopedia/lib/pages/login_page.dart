@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokopedia/pages/register_page.dart';
 import 'package:pokopedia/styles/styles.dart';
 import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
@@ -13,19 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
-    super.initState();
-  }
-
   String username = "";
   String password = "";
+  final fieldTextUsername = TextEditingController();
+  final fieldTextPassword = TextEditingController();
   void onButtonLogin() {
-    setState(() {
-      Provider.of<UserProvider>(context, listen: false)
-          .login(username, password);
-    });
+    Provider.of<UserProvider>(context, listen: false).login(username, password);
   }
 
   @override
@@ -49,7 +43,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
+                      onPressed: () {
+                        Navigator.pop(context, 'OK');
+                        fieldTextUsername.clear();
+                        fieldTextPassword.clear();
+                      },
                       child: Text('OK',
                           style: TextStyle(
                               color: navy(),
@@ -98,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: TextFormField(
+                      controller: fieldTextUsername,
                       onChanged: (text) {
                         username = text;
                       },
@@ -122,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                     child: TextFormField(
+                      controller: fieldTextPassword,
                       onChanged: (text) {
                         password = text;
                       },
@@ -182,7 +182,13 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()),
+                            );
+                          },
                           child: Text(
                             "Register",
                             style: TextStyle(

@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pokopedia/provider/user_provider.dart';
 import 'package:pokopedia/styles/styles.dart';
+import 'package:pokopedia/widgets/loading.dart';
 import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
@@ -38,10 +38,7 @@ class _DetailProductState extends State<DetailProduct> {
       final product = productState.product;
       final loading = productState.loading;
       return product == null
-          ? LoadingAnimationWidget.twoRotatingArc(
-              color: navy(),
-              size: 200,
-            )
+          ? const PokoLoading(size: 300)
           : Scaffold(
               appBar: const PokoAppBar2(),
               bottomNavigationBar: Container(
@@ -72,7 +69,7 @@ class _DetailProductState extends State<DetailProduct> {
                         height: MediaQuery.of(context).size.height * 0.50,
                         width: MediaQuery.of(context).size.width,
                         child: loading
-                            ? const Text("Loading")
+                            ? const PokoLoading(size: 300)
                             : Stack(children: [
                                 CarouselSlider(
                                   options: CarouselOptions(
@@ -212,7 +209,7 @@ class _DetailProductState extends State<DetailProduct> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Subtitle(
-                            text: "Recomendation",
+                            text: "Recomendations",
                             fontSize: 20,
                           ),
                           TextButton(

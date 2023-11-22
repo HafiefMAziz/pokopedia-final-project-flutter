@@ -11,6 +11,7 @@ class UserProvider extends ChangeNotifier {
   // String? get accesToken => _accesToken;
   bool loading = false;
   String? loginMessage;
+  String? registerMessage;
 
   Future<void> login(String username, String password) async {
     loading = true;
@@ -24,8 +25,21 @@ class UserProvider extends ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+  Future<void> register(username, password, fullname, email, address) async {
+    loading = true;
+    notifyListeners();
+    final response = await _service.register(username, password, fullname, email, address);
+    if (response["error"] != null) {
+      registerMessage = response["error"];
+    }else{
+      registerMessage = response["message"];
+    }
+    loading = false;
+    notifyListeners();
+  }
   void updateMessage(){
     loginMessage = null;
+    registerMessage = null;
     notifyListeners();
   }
 }
