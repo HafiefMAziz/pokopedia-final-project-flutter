@@ -28,10 +28,12 @@ class ProductImage{
   });
 }
 class ProductCategory{
+  final int id;
   final String name;
   final String icon;
   final String baseColor;
   ProductCategory({
+    required this.id,
     required this.name,
     required this.icon,
     required this.baseColor,

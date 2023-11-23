@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
                   return loadingCategory
                       ? const PokoLoading(size: 80,)
                       : CategoryIcon(
+                          id: categories[index].id,
                           name: categories[index].name,
                           iconUrl: categories[index].icon,
                         );
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(
-              height: 300,
+              height: 320,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: ListView.builder(
@@ -117,12 +118,16 @@ class _HomePageState extends State<HomePage> {
                               size: 80,
                             ),
                           )
-                        : ProductCard(
-                            id: products[index].id,
-                            name: products[index].name,
-                            price: products[index].price,
-                            imageUrl: products[index].productImages[0].url,
-                          );
+                        : Container(
+                          width: 200,
+                          margin: EdgeInsets.only(right: 8),
+                          child: ProductCard(
+                              id: products[index].id,
+                              name: products[index].name,
+                              price: products[index].price,
+                              imageUrl: products[index].productImages[0].url,
+                            ),
+                        );
                   },
                 ),
               ),

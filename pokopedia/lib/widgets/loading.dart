@@ -10,12 +10,14 @@ class PokoLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        child: LoadingAnimationWidget.twoRotatingArc(
-          color: navy(),
-          size: size,
+    return Center(
+      child: Container(
+          padding: const EdgeInsets.all(15),
+          child: LoadingAnimationWidget.twoRotatingArc(
+            color: navy(),
+            size: size,
+          ),
         ),
-      );
+    );
   }
 }

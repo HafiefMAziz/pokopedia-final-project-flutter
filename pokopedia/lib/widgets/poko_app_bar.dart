@@ -11,7 +11,6 @@ class PokoAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: lightBlue(),
       elevation: 0,
       toolbarHeight: 80,
       title: Row(
@@ -108,7 +107,8 @@ class CartIcon extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: navy(), width: 1.0),
+            color: lightBlue(),
+              border: Border.all(color: tropicalBlue(), width: 1.0),
               borderRadius:
                   const BorderRadius.all(Radius.circular(10.0))),
           child: IconButton(

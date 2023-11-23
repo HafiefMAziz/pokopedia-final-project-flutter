@@ -8,6 +8,7 @@ import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
 import '../provider/product_provider.dart';
 import '../widgets/product_card.dart';
+import 'category_products_page.dart';
 
 class DetailProduct extends StatefulWidget {
   const DetailProduct({super.key, required this.id});
@@ -98,40 +99,52 @@ class _DetailProductState extends State<DetailProduct> {
                                   child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           20, 0, 0, 15),
-                                      child: Container(
-                                          alignment: Alignment.center,
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 10, 15, 10),
-                                          decoration: BoxDecoration(
-                                            color: navy(),
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(30)),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Image.network(
-                                                product.categories[0].icon,
-                                                fit: BoxFit.cover,
-                                                color: red(),
-                                                height: 30,
-                                              ),
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.fromLTRB(
-                                                        12, 0, 0, 0),
-                                                child: Text(
-                                                  product.categories[0].name,
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CategoryProductPage(
+                                                          id: product
+                                                              .categories[0]
+                                                              .id)));
+                                        },
+                                        child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.fromLTRB(
+                                                15, 10, 15, 10),
+                                            decoration: BoxDecoration(
+                                              color: navy(),
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(30)),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Image.network(
+                                                  product.categories[0].icon,
+                                                  fit: BoxFit.cover,
+                                                  color: red(),
+                                                  height: 30,
                                                 ),
-                                              ),
-                                            ],
-                                          ))),
+                                                Container(
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          12, 0, 0, 0),
+                                                  child: Text(
+                                                    product.categories[0].name,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                      )),
                                 ),
                               ])),
                     Container(
@@ -228,18 +241,21 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                      height: 300,
+                      height: 320,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return ProductCard(
-                              id: products[index].id,
-                              name: products[index].name,
-                              price: products[index].price,
-                              imageUrl: products[index].productImages[0].url,
+                            return SizedBox(
+                              width: 200,
+                              child: ProductCard(
+                                id: products[index].id,
+                                name: products[index].name,
+                                price: products[index].price,
+                                imageUrl: products[index].productImages[0].url,
+                              ),
                             );
                           },
                         ),
@@ -249,10 +265,6 @@ class _DetailProductState extends State<DetailProduct> {
                       color: lightBlue(),
                       thickness: 15,
                     ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.50,
-                    //   child: Text(product.toString()),
-                    // ),
                   ],
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/category_products_page.dart';
 import '../styles/styles.dart';
 
 class CategoryIcon extends StatelessWidget {
@@ -6,8 +7,10 @@ class CategoryIcon extends StatelessWidget {
     super.key,
     required this.name,
     required this.iconUrl,
+    required this.id,
   });
 
+  final int id;
   final String name;
   final String iconUrl;
 
@@ -17,7 +20,8 @@ class CategoryIcon extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            print("Navigate to Category");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CategoryProductPage(id: id)));
           },
           child: Container(
             height: 60,
@@ -30,10 +34,10 @@ class CategoryIcon extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Image.network(
-                  color: navy(),
-                  iconUrl,
-                  fit: BoxFit.cover,
-                  ),
+                color: navy(),
+                iconUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

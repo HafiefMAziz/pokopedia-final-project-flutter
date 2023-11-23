@@ -3,10 +3,14 @@ import 'package:http/http.dart';
 import '../models/product.dart';
 
 class ProductService {
-  Future<List<Product>> getProducts(accessToken) async {
+  Future<List<Product>> getProducts(accessToken, [queryName]) async {
     try {
-      Response response = await get(Uri.parse("http://10.0.2.2:3000/products"),
-          headers: {'access_token': accessToken});
+      String url = "http://10.0.2.2:3000/products";
+      if (queryName != null) {
+        url = "http://10.0.2.2:3000/products?name=$queryName";
+      }
+      Response response =
+          await get(Uri.parse(url), headers: {'access_token': accessToken});
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
         final data = json["data"] as List;
@@ -15,7 +19,11 @@ class ProductService {
             return ProductImage(url: i["url"]);
           }).toList();
           final cat = item["categories"].map((i) {
-            return ProductCategory(name: i["name"], icon: i["icon"], baseColor: i["baseColor"]);
+            return ProductCategory(
+                id: i["id"],
+                name: i["name"],
+                icon: i["icon"],
+                baseColor: i["baseColor"]);
           }).toList();
           return Product(
             id: item["id"],
@@ -50,7 +58,10 @@ class ProductService {
         }).toList();
         final cat = data["categories"].map((i) {
           return ProductCategory(
-              name: i["name"], icon: i["icon"], baseColor: i["baseColor"]);
+              id: i["id"],
+              name: i["name"],
+              icon: i["icon"],
+              baseColor: i["baseColor"]);
         }).toList();
         final product = Product(
           id: data["id"],
