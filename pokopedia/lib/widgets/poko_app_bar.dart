@@ -1,5 +1,3 @@
-import 'package:pokopedia/widgets/subtitle.dart';
-
 import '../styles/styles.dart';
 import 'package:flutter/material.dart';
 

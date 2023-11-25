@@ -11,21 +11,21 @@ class ProductProvider extends ChangeNotifier {
   Product? get product => _product;
   bool loading = false;
 
-  Future<void> getProducts(accessToken) async {
+  Future<void> getProducts(accessToken, [queryName]) async {
     loading = true;
     notifyListeners();
-    final response = await _service.getProducts(accessToken);
-    _products = response;
     await Future.delayed(const Duration(seconds: 1));
+    final response = await _service.getProducts(accessToken, queryName);
+    _products = response;
     loading = false;
     notifyListeners();
   }
   Future<void> getProductById(accessToken, id) async {
     loading = true;
     notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
     final response = await _service.getProductById(accessToken, id);
     _product = response;
-    // await Future.delayed(const Duration(seconds: 1));
     loading = false;
     notifyListeners();
   }

@@ -3,14 +3,12 @@ import 'package:http/http.dart';
 import '../models/product.dart';
 
 class ProductService {
-  Future<List<Product>> getProducts(accessToken, [queryName]) async {
+  Future<List<Product>> getProducts(accessToken, queryName) async {
     try {
-      String url = "http://10.0.2.2:3000/products";
-      if (queryName != null) {
-        url = "http://10.0.2.2:3000/products?name=$queryName";
-      }
+      String url = queryName == null ? "http://10.0.2.2:3000/products" : "http://10.0.2.2:3000/products?name=$queryName";
       Response response =
           await get(Uri.parse(url), headers: {'access_token': accessToken});
+      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
         final data = json["data"] as List;

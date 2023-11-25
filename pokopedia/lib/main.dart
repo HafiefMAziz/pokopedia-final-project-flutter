@@ -16,6 +16,7 @@ import 'provider/user_provider.dart';
 import 'widgets/bottom_navbar.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => PageProvider()),
     ChangeNotifierProvider(create: (context) => UserProvider()),

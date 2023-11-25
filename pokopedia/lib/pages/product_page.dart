@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pokopedia/pages/category_products_page.dart';
 import 'package:pokopedia/provider/category_provider.dart';
@@ -5,6 +7,7 @@ import 'package:pokopedia/styles/styles.dart';
 import 'package:pokopedia/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 import '../provider/product_provider.dart';
+import '../provider/user_provider.dart';
 import '../widgets/subtitle.dart';
 
 class ProductPage extends StatefulWidget {
@@ -15,6 +18,17 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  String query = "";
+  final fieldTextQuery = TextEditingController();
+  void searchQuery(String text) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final String? accessToken =
+          Provider.of<UserProvider>(context, listen: false).accessToken;
+      Provider.of<ProductProvider>(context, listen: false)
+          .getProducts(accessToken, text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<ProductProvider, CategoryProvider>(
@@ -26,18 +40,46 @@ class _ProductPageState extends State<ProductPage> {
           child: Container(
             padding: const EdgeInsets.all(20),
             child: Column(children: [
-              Container(
+               Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                child: TextFormField(
+                  controller: fieldTextQuery,
+                  onFieldSubmitted: (text) {
+                    query = text;
+                    searchQuery(text);
+                  },
+                  style: TextStyle(
+                      color: navy(), fontSize: 18, fontWeight: FontWeight.w600),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: navy(),
+                    ),
+                    labelText: 'Search products ...',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (query == "") Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Subtitle(
                   text: "Categories",
                   fontSize: 20,
                 ),
               ),
-              Column(children: [
+              if (query == "") Column(children: [
                 for (var cat in categories)
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryProductPage(id: cat.id)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CategoryProductPage(id: cat.id)));
                     },
                     child: Card(
                       margin: const EdgeInsets.only(bottom: 15),
@@ -52,7 +94,7 @@ class _ProductPageState extends State<ProductPage> {
                             bottom: 0,
                             child: Image.network(cat.icon)),
                         Container(
-                          height: 120,
+                          height: 100,
                           padding: const EdgeInsets.all(20),
                           width: MediaQuery.of(context).size.width,
                           child: Column(
@@ -70,14 +112,21 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
               ]),
+              Container(
+                margin: const EdgeInsets.only(bottom: 20, top: 20),
+                child: const Subtitle(
+                  text: "Products",
+                  fontSize: 20,
+                ),
+              ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height * 1.1,
                 child: GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 10,
+                  mainAxisSpacing: 8,
                   crossAxisCount: 2,
-                  childAspectRatio: (1/1.8),
+                  childAspectRatio: (1 / 1.7),
                   children: <Widget>[
                     for (var product in products)
                       SizedBox(

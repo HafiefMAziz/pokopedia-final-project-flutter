@@ -14,9 +14,9 @@ class CategoryProvider extends ChangeNotifier {
   Future<void> getCategories(accessToken) async {
     loading = true;
     notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
     final response = await _service.getCategories(accessToken);
     _categories = response;
-    await Future.delayed(const Duration(seconds: 1));
     loading = false;
     notifyListeners();
   }
@@ -24,6 +24,7 @@ class CategoryProvider extends ChangeNotifier {
   Future<void> getCategoryById(accessToken, id) async {
     loading = true;
     notifyListeners();
+    await Future.delayed(const Duration(seconds: 1));
     final response = await _service.getCategoryById(accessToken, id);
     _category = response;
     loading = false;
