@@ -8,7 +8,6 @@ class ProductService {
       String url = queryName == null ? "http://10.0.2.2:3000/products" : "http://10.0.2.2:3000/products?name=$queryName";
       Response response =
           await get(Uri.parse(url), headers: {'access_token': accessToken});
-      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
         final data = json["data"] as List;

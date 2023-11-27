@@ -11,6 +11,7 @@ import '../widgets/poko_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'provider/cart_provider.dart';
 import 'provider/category_provider.dart';
 import 'provider/user_provider.dart';
 import 'widgets/bottom_navbar.dart';
@@ -22,11 +23,13 @@ void main() {
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => ProductProvider()),
     ChangeNotifierProvider(create: (context) => CategoryProvider()),
+    ChangeNotifierProvider(create: (context) => CartProvider()),
   ], child: const MainPage()));
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({super.key, this.pageIndex});
+  final dynamic pageIndex;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -51,7 +54,7 @@ class _MainPageState extends State<MainPage> {
         home: accessToken != null
             ? Scaffold(
                 appBar: const PokoAppBar(),
-                body: pageList[pageState.pageIndex],
+                body: widget.pageIndex != null ? pageList[widget.pageIndex] : pageList[pageState.pageIndex],
                 bottomNavigationBar: const BottomNavbar(),
               )
             : const LoginPage(),

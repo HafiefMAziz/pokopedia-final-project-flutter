@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pokopedia/provider/product_provider.dart';
 import 'package:pokopedia/provider/user_provider.dart';
 import 'package:provider/provider.dart';
+import '../provider/cart_provider.dart';
 import '../provider/category_provider.dart';
 import '../styles/styles.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/category_icon.dart';
 import '../widgets/loading.dart';
 import '../widgets/product_card.dart';
@@ -24,21 +26,38 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final String? accessToken = Provider.of<UserProvider>(context, listen: false).accessToken;
-      Provider.of<ProductProvider>(context, listen: false).getProducts(accessToken);
-      Provider.of<CategoryProvider>(context, listen: false).getCategories(accessToken);
+      final String? accessToken =
+          Provider.of<UserProvider>(context, listen: false).accessToken;
+      Provider.of<ProductProvider>(context, listen: false)
+          .getProducts(accessToken);
+      Provider.of<CategoryProvider>(context, listen: false)
+          .getCategories(accessToken);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer2<ProductProvider, CategoryProvider>(
-          builder: (context, productState, categoryState, child) {
+      body: Consumer3<ProductProvider, CategoryProvider, CartProvider>(
+          builder: (context, productState, categoryState, cartState, child) {
         final products = productState.products;
         final categories = categoryState.categories;
         final loadingProduct = productState.loading;
         final loadingCategory = categoryState.loading;
+        final cartMessage = cartState.message;
+
+        if (cartMessage != null) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertMessage(
+                      titleMessage: "Message", contentMessage: cartMessage);
+                });
+            Provider.of<CartProvider>(context, listen: false).clearMessage();
+          });
+        }
+
         return Column(
           children: [
             Padding(
@@ -71,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return loadingCategory
-                      ? const PokoLoading(size: 80,)
+                      ? const PokoLoading(
+                          size: 80,
+                        )
                       : CategoryIcon(
                           id: categories[index].id,
                           name: categories[index].name,
@@ -119,15 +140,15 @@ class _HomePageState extends State<HomePage> {
                             ),
                           )
                         : Container(
-                          width: 200,
-                          margin: EdgeInsets.only(right: 8),
-                          child: ProductCard(
+                            width: 200,
+                            margin: const EdgeInsets.only(right: 8),
+                            child: ProductCard(
                               id: products[index].id,
                               name: products[index].name,
                               price: products[index].price,
                               imageUrl: products[index].productImages[0].url,
                             ),
-                        );
+                          );
                   },
                 ),
               ),
@@ -138,4 +159,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

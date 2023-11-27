@@ -8,7 +8,6 @@ class UserProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
   String? accessToken;
-  // String? get accesToken => _accesToken;
   bool loading = false;
   String? loginMessage;
   String? registerMessage;

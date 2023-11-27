@@ -6,7 +6,9 @@ import 'package:pokopedia/widgets/loading.dart';
 import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
+import '../provider/cart_provider.dart';
 import '../provider/product_provider.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/product_card.dart';
 import 'category_products_page.dart';
 
@@ -34,22 +36,41 @@ class _DetailProductState extends State<DetailProduct> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductProvider>(builder: (context, productState, child) {
+    return Consumer2<ProductProvider, CartProvider>(
+        builder: (context, productState, cartState, child) {
       final products = productState.products;
       final product = productState.product;
       final loading = productState.loading;
+      final cartMessage = cartState.message;
+
+      addCart(int id) {
+        final String? accessToken =
+            Provider.of<UserProvider>(context, listen: false).accessToken;
+        Provider.of<CartProvider>(context, listen: false)
+            .addCarts(accessToken, id);
+      }
+
+      if (cartMessage != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertMessage(
+                    titleMessage: "Message", contentMessage: cartMessage);
+              });
+          Provider.of<CartProvider>(context, listen: false).clearMessage();
+        });
+      }
       return product == null
           ? const PokoLoading(size: 300)
           : Scaffold(
               appBar: const PokoAppBar2(),
-              bottomNavigationBar: Container(
-                color: red(),
-                height: 60,
-                alignment: AlignmentDirectional.center,
-                child: GestureDetector(
-                  onTap: () {
-                    print("Add to Cart ${product.id}");
-                  },
+              bottomNavigationBar: GestureDetector(
+                onTap: () => addCart(product.id),
+                child: Container(
+                  color: red(),
+                  height: 60,
+                  alignment: AlignmentDirectional.center,
                   child: Text(
                     "Add to Cart",
                     style: TextStyle(

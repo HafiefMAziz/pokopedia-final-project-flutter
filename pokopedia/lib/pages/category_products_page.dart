@@ -20,13 +20,13 @@ class CategoryProductPage extends StatefulWidget {
 class _CategoryProductPageState extends State<CategoryProductPage> {
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final String? accessToken =
           Provider.of<UserProvider>(context, listen: false).accessToken;
       Provider.of<CategoryProvider>(context, listen: false)
           .getCategoryById(accessToken, widget.id);
     });
+    super.initState();
   }
 
   @override
@@ -35,10 +35,10 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
       final category = categoryState.category;
       final loading = categoryState.loading;
       return Scaffold(
-        appBar: PokoAppBar3(title: category!.name),
+        appBar: PokoAppBar3(title: category != null ? category.name : "....."),
         body: loading
             ? const PokoLoading(size: 200)
-            : SingleChildScrollView(
+            : category != null ? SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
@@ -98,7 +98,7 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
                     )
                   ],
                 ),
-              ),
+              ) : const PokoLoading(size: 200),
       );
     });
   }

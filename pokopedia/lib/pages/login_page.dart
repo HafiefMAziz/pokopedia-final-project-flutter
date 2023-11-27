@@ -5,6 +5,7 @@ import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
+import '../widgets/alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,31 +32,8 @@ class _LoginPageState extends State<LoginPage> {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: lightBlue(),
-                  title: const Subtitle(text: "Login Error", fontSize: 25),
-                  content: Text(
-                    loginMessage,
-                    style: TextStyle(
-                        color: navy(),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context, 'OK');
-                        fieldTextUsername.clear();
-                        fieldTextPassword.clear();
-                      },
-                      child: Text('OK',
-                          style: TextStyle(
-                              color: navy(),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400)),
-                    ),
-                  ],
-                );
+                return AlertMessage(
+                      titleMessage: "Login Error", contentMessage: loginMessage);
               });
           Provider.of<UserProvider>(context, listen: false).updateMessage();
         });
@@ -186,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterPage()),
+                                  builder: (context) => const RegisterPage()),
                             );
                           },
                           child: Text(

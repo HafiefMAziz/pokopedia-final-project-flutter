@@ -44,7 +44,6 @@ class UserService {
         "address": address,
       });
       final json = jsonDecode(response.body);
-      print(json);
       return json;
     } catch (e) {
       throw "Error Register Service $e";

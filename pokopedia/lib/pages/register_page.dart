@@ -4,7 +4,7 @@ import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/styles.dart';
-import '../widgets/subtitle.dart';
+import '../widgets/alert_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -34,27 +34,8 @@ class _RegisterPageState extends State<RegisterPage> {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: lightBlue(),
-                  title: const Subtitle(text: "Register Message", fontSize: 25),
-                  content: Text(
-                    registerMessage,
-                    style: TextStyle(
-                        color: navy(),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
-                      child: Text('OK',
-                          style: TextStyle(
-                              color: navy(),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400)),
-                    ),
-                  ],
-                );
+                return AlertMessage(
+                    titleMessage: "Message", contentMessage: registerMessage);
               });
           Provider.of<UserProvider>(context, listen: false).updateMessage();
         });
