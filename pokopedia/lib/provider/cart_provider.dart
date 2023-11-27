@@ -28,12 +28,23 @@ class CartProvider extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 500));
     final response = await _service.addCart(accessToken, productId);
     print(response);
-    if (response["error"] != null) {
-      message = response["error"];
-    } else {
+    if (response is Cart) {
       _carts.add(response);
       message = "Success adding to your Carts";
+    } else if (response["error"] != null) {
+      message = response["error"];
     }
+    loading = false;
+    notifyListeners();
+  }
+
+  Future<void> deleteCarts(accessToken, int id) async {
+    loading = true;
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 500));
+    final response = await _service.deleteCart(accessToken, id);
+    message = response;
+    _carts.removeWhere((cart) => cart.id == id);
     loading = false;
     notifyListeners();
   }

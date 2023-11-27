@@ -51,7 +51,6 @@ class CartService {
         "productCount": "1",
       });
       final json = jsonDecode(response.body);
-      print(json);
       if (response.statusCode == 200) {
         final dataCart = json["data"]["newCart"];
         final dataProduct = json["data"]["productCart"];
@@ -80,6 +79,25 @@ class CartService {
         return json;
       }
       throw "Error Adding to Cart";
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future deleteCart(accessToken, int id) async {
+    try {
+      String url = "http://10.0.2.2:3000/carts/delete/$id";
+      Response response = await delete(Uri.parse(url), headers: {
+        'access_token': accessToken
+      });
+      final json = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return json["message"];
+      } 
+      else if (response.statusCode == 500) {
+        return json["error"];
+      }
+      throw "Error Deleting to Cart";
     } catch (e) {
       rethrow;
     }

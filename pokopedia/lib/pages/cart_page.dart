@@ -3,6 +3,7 @@ import 'package:pokopedia/styles/formatter.dart';
 import 'package:pokopedia/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import '../styles/styles.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/subtitle.dart';
 import '../provider/cart_provider.dart';
 import '../provider/user_provider.dart';
@@ -33,6 +34,64 @@ class _CartPageState extends State<CartPage> {
       final carts = cartState.carts;
       final loading = cartState.loading;
       final accessToken = userState.accessToken;
+      final cartMessage = cartState.message;
+
+      if (cartMessage != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertMessage(
+                    titleMessage: "Message", contentMessage: cartMessage);
+              });
+          Provider.of<CartProvider>(context, listen: false).clearMessage();
+        });
+      }
+      deleteCart(int id) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Provider.of<CartProvider>(context, listen: false)
+              .deleteCarts(accessToken, id);
+        });
+      }
+
+      showConfirmation(int id) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: lightBlue(),
+                content: Text("Are you sure you want to delete this ?",
+                    style: TextStyle(
+                        color: navy(),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400)),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      deleteCart(id);
+                      Navigator.pop(context);
+                    },
+                    child: Text("Yes",
+                        style: TextStyle(
+                            color: navy(),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No',
+                        style: TextStyle(
+                            color: navy(),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400)),
+                  ),
+                ],
+              );
+            });
+      }
+
       return Scaffold(
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -120,15 +179,16 @@ class _CartPageState extends State<CartPage> {
                                   right: 0,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: red(),
-                                      borderRadius: const BorderRadius.only( topRight: Radius.circular(20), bottomLeft: Radius.circular(20))
-                                    ),
+                                        shape: BoxShape.rectangle,
+                                        color: red(),
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20))),
                                     child: IconButton(
-                                      onPressed: () {
-                                        print("delete");
-                                      },
-                                      icon: const Icon(Icons.delete_rounded, color: Colors.white),
+                                      onPressed: () =>
+                                          showConfirmation(cart.id),
+                                      icon: const Icon(Icons.delete_rounded,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 ),
