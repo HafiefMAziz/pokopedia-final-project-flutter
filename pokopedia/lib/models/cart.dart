@@ -6,6 +6,7 @@ class Cart {
   int productCount;
   final String createdAt;
   final Product product;
+  int totalPrice;
 
   Cart({
     required this.id,
@@ -13,5 +14,6 @@ class Cart {
     required this.productCount,
     required this.createdAt,
     required this.product,
+    required this.totalPrice,
   });
 }

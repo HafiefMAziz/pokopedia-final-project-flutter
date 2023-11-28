@@ -6,13 +6,15 @@ import '../pages/cart_page.dart';
 import '../pages/home_page.dart';
 import '../pages/product_page.dart';
 import '../pages/profile_page.dart';
-import '../pages/transaction_page.dart';
+import 'pages/transactions_list_page.dart';
 import '../widgets/poko_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/cart_provider.dart';
 import 'provider/category_provider.dart';
+import 'provider/payment_provider.dart';
+import 'provider/transaction_provider.dart';
 import 'provider/user_provider.dart';
 import 'widgets/bottom_navbar.dart';
 
@@ -24,6 +26,8 @@ void main() {
     ChangeNotifierProvider(create: (context) => ProductProvider()),
     ChangeNotifierProvider(create: (context) => CategoryProvider()),
     ChangeNotifierProvider(create: (context) => CartProvider()),
+    ChangeNotifierProvider(create: (context) => PaymentProvider()),
+    ChangeNotifierProvider(create: (context) => TransactionProvider()),
   ], child: const MainPage()));
 }
 
@@ -40,7 +44,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const ProductPage(),
     const CartPage(),
-    const TransactionPage(),
+    const TransactionListPage(),
     const ProfilePage(),
   ];
 

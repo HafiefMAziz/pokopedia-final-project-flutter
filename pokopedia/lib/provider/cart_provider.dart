@@ -27,7 +27,6 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
     await Future.delayed(const Duration(milliseconds: 500));
     final response = await _service.addCart(accessToken, productId);
-    print(response);
     if (response is Cart) {
       _carts.add(response);
       message = "Success adding to your Carts";
@@ -88,14 +87,4 @@ class CartProvider extends ChangeNotifier {
     loading = false;
     notifyListeners();
   }
-
-  // Future<void> getCartById(accessToken, id) async {
-  //   loading = true;
-  //   notifyListeners();
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   final response = await _service.getCartById(accessToken, id);
-  //   _cart = response;
-  //   loading = false;
-  //   notifyListeners();
-  // }
 }

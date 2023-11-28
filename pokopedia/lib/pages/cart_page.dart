@@ -7,6 +7,7 @@ import '../widgets/alert_dialog.dart';
 import '../widgets/subtitle.dart';
 import '../provider/cart_provider.dart';
 import '../provider/user_provider.dart';
+import 'checkout_page.dart';
 import 'detail_product_page.dart';
 
 class CartPage extends StatefulWidget {
@@ -53,6 +54,9 @@ class _CartPageState extends State<CartPage> {
               .deleteCarts(accessToken, id);
         });
       }
+      checkout(List carts){
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const CheckoutPage()));
+      }
 
       showConfirmation(int id) {
         showDialog(
@@ -93,6 +97,24 @@ class _CartPageState extends State<CartPage> {
       }
 
       return Scaffold(
+        bottomSheet: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+            onPressed: () => checkout(carts),
+            style: ButtonStyle(
+                padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 15)),
+                backgroundColor: MaterialStatePropertyAll(red()),
+                shape: MaterialStateProperty.all(
+                    const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
+            child: Text(
+              "Checkout",
+              style: TextStyle(
+                  color: lightBlue(),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.all(20),

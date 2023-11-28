@@ -12,10 +12,14 @@ Color red() {
   return const Color.fromARGB(255, 252, 31, 31);
 }
 
+Color blue() {
+  return const Color.fromARGB(255, 1, 116, 190);
+}
+
 Color blueGreen() {
   return const Color.fromARGB(255, 78, 110, 129);
 }
 
 Color tropicalBlue() {
-  return const Color.fromARGB(255, 208, 218,	238);
+  return const Color.fromARGB(255, 208, 218, 238);
 }

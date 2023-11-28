@@ -31,7 +31,9 @@ class CartService {
               productId: cart["productId"],
               productCount: cart["productCount"],
               createdAt: cart["createdAt"],
-              product: product);
+              product: product,
+              totalPrice: cart["productCount"] * product.price,
+              );
         }).toList();
         return carts;
       }
@@ -62,6 +64,7 @@ class CartService {
           productId: dataCart["productId"],
           productCount: dataCart["productCount"],
           createdAt: dataCart["createdAt"],
+          totalPrice: dataCart["productCount"] * dataProduct["price"],
           product: Product(
             id: dataProduct["id"],
             userId: dataProduct["userId"],
