@@ -5,8 +5,10 @@ import 'package:pokopedia/styles/styles.dart';
 import 'package:pokopedia/widgets/loading.dart';
 import 'package:pokopedia/widgets/product_card.dart';
 import 'package:provider/provider.dart';
+import '../provider/cart_provider.dart';
 import '../provider/product_provider.dart';
 import '../provider/user_provider.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/subtitle.dart';
 
 class ProductPage extends StatefulWidget {
@@ -41,12 +43,24 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ProductProvider, CategoryProvider>(
-        builder: (context, productState, categoryState, child) {
+    return Consumer3<ProductProvider, CategoryProvider, CartProvider>(
+        builder: (context, productState, categoryState, cartState, child) {
       final products = productState.products;
-      final products_loading = productState.loading;
+      final productsLoading = productState.loading;
       final categories = categoryState.categories;
-      final categories_loading = categoryState.loading;
+      final categoriesLoading = categoryState.loading;
+      final cartMessage = cartState.message;
+      if (cartMessage != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertMessage(
+                    titleMessage: "Message", contentMessage: cartMessage);
+              });
+          Provider.of<CartProvider>(context, listen: false).clearMessage();
+        });
+      }
       return Scaffold(
         body: SingleChildScrollView(
           child: Container(
@@ -85,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                 ),
               if (query == "")
-                categories_loading
+                categoriesLoading
                     ? const PokoLoading(size: 100)
                     : Column(children: [
                         for (var cat in categories)
@@ -137,7 +151,7 @@ class _ProductPageState extends State<ProductPage> {
                   fontSize: 20,
                 ),
               ),
-              products_loading
+              productsLoading
                   ? const PokoLoading(size: 100)
                   : SizedBox(
                       width: MediaQuery.of(context).size.width,

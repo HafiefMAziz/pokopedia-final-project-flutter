@@ -54,8 +54,12 @@ class _CartPageState extends State<CartPage> {
               .deleteCarts(accessToken, id);
         });
       }
-      checkout(List carts){
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const CheckoutPage()));
+
+      checkout(List carts) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const CheckoutPage()));
       }
 
       showConfirmation(int id) {
@@ -97,24 +101,28 @@ class _CartPageState extends State<CartPage> {
       }
 
       return Scaffold(
-        bottomSheet: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: TextButton(
-            onPressed: () => checkout(carts),
-            style: ButtonStyle(
-                padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 15)),
-                backgroundColor: MaterialStatePropertyAll(red()),
-                shape: MaterialStateProperty.all(
-                    const RoundedRectangleBorder(borderRadius: BorderRadius.zero))),
-            child: Text(
-              "Checkout",
-              style: TextStyle(
-                  color: lightBlue(),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
+        bottomSheet: carts.isNotEmpty
+            ? SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () => checkout(carts),
+                  style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 15)),
+                      backgroundColor: MaterialStatePropertyAll(red()),
+                      shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero))),
+                  child: Text(
+                    "Checkout",
+                    style: TextStyle(
+                        color: lightBlue(),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              )
+            : null,
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.all(20),
@@ -135,135 +143,185 @@ class _CartPageState extends State<CartPage> {
               ),
               loading
                   ? const PokoLoading(size: 100)
-                  : Column(
-                      children: [
-                        for (var cart in carts)
-                          Container(
-                            height: 130,
-                            margin: const EdgeInsets.only(bottom: 12),
-                            decoration: BoxDecoration(
-                              color: lightBlue(),
-                              shape: BoxShape.rectangle,
-                              border: Border.all(color: tropicalBlue()),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
+                  : carts.isEmpty
+                      ? Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 230,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 30),
+                                    child: Image.asset(
+                                      "assets/images/book-idea.png",
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Your carts is empty!",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: navy(),
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    "Looks like you haven't added anything\nto your cart yet ",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(color: navy(), fontSize: 14),
+                                  )
+                                ],
                               ),
                             ),
-                            child: Stack(
-                              children: [
-                                Row(children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DetailProduct(
-                                                      id: cart.product.id)));
-                                    },
-                                    child: Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.horizontal(
-                                            left: Radius.circular(20)),
-                                      ),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                      child: Image.network(
-                                        cart.product.productImages[0].url,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Subtitle(
-                                              text: cart.product.name,
-                                              fontSize: 20),
-                                          Text(
-                                            CurrencyFormat.convertToIdr(
-                                                cart.product.price, 0),
-                                            style: TextStyle(
-                                                color: navy(), fontSize: 18),
-                                          ),
-                                        ]),
-                                  )
-                                ]),
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        color: red(),
-                                        borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(20),
-                                            bottomLeft: Radius.circular(20))),
-                                    child: IconButton(
-                                      onPressed: () =>
-                                          showConfirmation(cart.id),
-                                      icon: const Icon(Icons.delete_rounded,
-                                          color: Colors.white),
-                                    ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            for (var cart in carts)
+                              Container(
+                                height: 130,
+                                margin: const EdgeInsets.only(bottom: 12),
+                                decoration: BoxDecoration(
+                                  color: lightBlue(),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(color: tropicalBlue()),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          iconSize: 35,
-                                          onPressed: cart.productCount <
-                                                  cart.product.stock
-                                              ? () async {
-                                                  if (!loading) {
-                                                    await cartState
-                                                        .increaseCount(
-                                                            accessToken,
-                                                            cart.id);
+                                child: Stack(
+                                  children: [
+                                    Row(children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailProduct(
+                                                          id: cart
+                                                              .product.id)));
+                                        },
+                                        child: Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.horizontal(
+                                                    left: Radius.circular(20)),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.35,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Image.network(
+                                            cart.product.productImages[0].url,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Subtitle(
+                                                  text: cart.product.name,
+                                                  fontSize: 20),
+                                              Text(
+                                                CurrencyFormat.convertToIdr(
+                                                    cart.product.price, 0),
+                                                style: TextStyle(
+                                                    color: navy(),
+                                                    fontSize: 18),
+                                              ),
+                                            ]),
+                                      )
+                                    ]),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: red(),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                    bottomLeft:
+                                                        Radius.circular(20))),
+                                        child: IconButton(
+                                          onPressed: () =>
+                                              showConfirmation(cart.id),
+                                          icon: const Icon(Icons.delete_rounded,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                              iconSize: 35,
+                                              onPressed: cart.productCount <
+                                                      cart.product.stock
+                                                  ? () async {
+                                                      if (!loading) {
+                                                        await cartState
+                                                            .increaseCount(
+                                                                accessToken,
+                                                                cart.id);
+                                                      }
+                                                    }
+                                                  : null,
+                                              icon: const Icon(
+                                                  Icons.add_box_rounded),
+                                              color: red()),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Subtitle(
+                                                text: cart.productCount
+                                                    .toString(),
+                                                fontSize: 20),
+                                          ),
+                                          IconButton(
+                                            iconSize: 35,
+                                            onPressed: cart.productCount > 1
+                                                ? () async {
+                                                    if (!loading) {
+                                                      await cartState
+                                                          .decreaseCount(
+                                                              accessToken,
+                                                              cart.id);
+                                                    }
                                                   }
-                                                }
-                                              : null,
-                                          icon:
-                                              const Icon(Icons.add_box_rounded),
-                                          color: red()),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Subtitle(
-                                            text: cart.productCount.toString(),
-                                            fontSize: 20),
+                                                : null,
+                                            icon: const Icon(Icons
+                                                .indeterminate_check_box_rounded),
+                                            color: red(),
+                                          ),
+                                        ],
                                       ),
-                                      IconButton(
-                                        iconSize: 35,
-                                        onPressed: cart.productCount > 1
-                                            ? () async {
-                                                if (!loading) {
-                                                  await cartState.decreaseCount(
-                                                      accessToken, cart.id);
-                                                }
-                                              }
-                                            : null,
-                                        icon: const Icon(Icons
-                                            .indeterminate_check_box_rounded),
-                                        color: red(),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
             ],
           ),
         ),

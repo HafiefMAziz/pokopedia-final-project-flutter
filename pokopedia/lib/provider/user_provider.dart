@@ -11,6 +11,8 @@ class UserProvider extends ChangeNotifier {
   bool loading = false;
   String? loginMessage;
   String? registerMessage;
+  String? editProfileMessage;
+  String? changePasswordMessage;
 
   Future<void> login(String username, String password) async {
     loading = true;
@@ -24,21 +26,67 @@ class UserProvider extends ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+
   Future<void> register(username, password, fullname, email, address) async {
     loading = true;
     notifyListeners();
-    final response = await _service.register(username, password, fullname, email, address);
+    final response =
+        await _service.register(username, password, fullname, email, address);
     if (response["error"] != null) {
       registerMessage = response["error"];
-    }else{
+    } else {
       registerMessage = response["message"];
     }
     loading = false;
     notifyListeners();
   }
-  void updateMessage(){
+
+  Future<void> editProfile(username, avatar, fullname, email, address) async {
+    loading = true;
+    notifyListeners();
+    final response = await _service.editProfile(
+        accessToken, _user!.id, username, avatar, fullname, email, address);
+    print(response);
+    if (response["error"] != null) {
+      editProfileMessage = response["error"];
+    } else {
+      _user = response["updatedData"];
+      editProfileMessage = response["message"];
+    }
+    loading = false;
+    notifyListeners();
+  }
+
+  Future<void> changePassword(
+      oldPassword, newPassword, confirmNewPassword) async {
+    loading = true;
+    notifyListeners();
+    final response = await _service.changePassword(
+        accessToken, _user!.id, oldPassword, newPassword, confirmNewPassword);
+    print(response);
+    if (response["error"] != null) {
+      changePasswordMessage = response["error"];
+    } else {
+      changePasswordMessage = response["message"];
+    }
+    loading = false;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    loading = true;
+    notifyListeners();
+    accessToken = null;
+    _user = null;
+    loading = false;
+    notifyListeners();
+  }
+
+  void updateMessage() {
     loginMessage = null;
     registerMessage = null;
+    editProfileMessage = null;
+    changePasswordMessage = null;
     notifyListeners();
   }
 }

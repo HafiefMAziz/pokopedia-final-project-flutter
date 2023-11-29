@@ -87,7 +87,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  "The order will be forwarded  the seller. \nPlease check status of your order in the \ntransaction list.",
+                                  "The order will be forwarded the seller. \nPlease check status of your order in the \ntransaction list.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: navy(), fontSize: 14),
                                 )

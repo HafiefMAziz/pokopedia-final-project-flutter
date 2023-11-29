@@ -15,7 +15,7 @@ class BottomNavbar extends StatelessWidget {
     return Consumer<PageProvider>(builder: (context, pageState, child) {
       return Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(top: Radius.elliptical(30, 30)),
+          // borderRadius: const BorderRadius.vertical(top: Radius.elliptical(30, 30)),
           color: lightBlue(),
         ),
         child: Padding(
@@ -34,7 +34,7 @@ class BottomNavbar extends StatelessWidget {
                 onTap: () {
                   pageState.pageIndex = 1;
                 },
-                icon: Icons.category_rounded,
+                icon: Icons.now_widgets_rounded,
                 selected: pageState.pageIndex == 1 ? true : false,
               ),
               BottomNavIcon(

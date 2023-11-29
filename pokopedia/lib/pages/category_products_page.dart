@@ -3,9 +3,11 @@ import 'package:pokopedia/widgets/loading.dart';
 import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/cart_provider.dart';
 import '../provider/category_provider.dart';
 import '../provider/user_provider.dart';
 import '../styles/styles.dart';
+import '../widgets/alert_dialog.dart';
 import '../widgets/product_card.dart';
 import '../widgets/subtitle.dart';
 
@@ -31,9 +33,21 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CategoryProvider>(builder: (context, categoryState, child) {
+    return Consumer2<CategoryProvider, CartProvider>(builder: (context, categoryState, cartState, child) {
       final category = categoryState.category;
       final loading = categoryState.loading;
+      final cartMessage = cartState.message;
+      if (cartMessage != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertMessage(
+                    titleMessage: "Message", contentMessage: cartMessage);
+              });
+          Provider.of<CartProvider>(context, listen: false).clearMessage();
+        });
+      }
       return Scaffold(
         appBar: PokoAppBar3(title: category != null ? category.name : "....."),
         body: loading
