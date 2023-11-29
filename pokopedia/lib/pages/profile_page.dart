@@ -3,7 +3,6 @@ import 'package:pokopedia/pages/edit_profile.dart';
 import 'package:pokopedia/provider/user_provider.dart';
 import 'package:pokopedia/styles/styles.dart';
 import 'package:pokopedia/widgets/loading.dart';
-import 'package:pokopedia/widgets/subtitle.dart';
 import 'package:provider/provider.dart';
 
 import 'change_password.dart';
