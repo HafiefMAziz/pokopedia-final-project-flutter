@@ -122,7 +122,7 @@ class _ProductPageState extends State<ProductPage> {
                                 Positioned(
                                     right: 15,
                                     bottom: 0,
-                                    child: Image.network(cat.icon)),
+                                    child: Image.network(cat.icon, height: 40, color:navy(), fit: BoxFit.fitHeight)),
                                 Container(
                                   height: 100,
                                   padding: const EdgeInsets.all(20),

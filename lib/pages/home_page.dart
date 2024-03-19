@@ -4,6 +4,7 @@ import 'package:pokopedia/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/cart_provider.dart';
 import '../provider/category_provider.dart';
+import '../provider/page_provider.dart';
 import '../styles/styles.dart';
 import '../widgets/alert_dialog.dart';
 import '../widgets/category_icon.dart';
@@ -38,8 +39,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer3<ProductProvider, CategoryProvider, CartProvider>(
-          builder: (context, productState, categoryState, cartState, child) {
+      body: Consumer4<ProductProvider, CategoryProvider, CartProvider,
+              PageProvider>(
+          builder: (context, productState, categoryState, cartState, pageState,
+              child) {
         final products = productState.products;
         final categories = categoryState.categories;
         final loadingProduct = productState.loading;
@@ -71,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      print("Navigate to All Categories");
+                      pageState.pageIndex = 1;
                     },
                     child: Text(
                       "View All >",
@@ -112,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      print("Navigate to All Products");
+                      pageState.pageIndex = 1;
                     },
                     child: Text(
                       "View All >",

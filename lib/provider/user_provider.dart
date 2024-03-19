@@ -30,12 +30,20 @@ class UserProvider extends ChangeNotifier {
   Future<void> register(username, password, fullname, email, address) async {
     loading = true;
     notifyListeners();
-    final response =
-        await _service.register(username, password, fullname, email, address);
-    if (response["error"] != null) {
-      registerMessage = response["error"];
+    if (username == "" ||
+        password == "" ||
+        fullname == "" ||
+        email == "" ||
+        address == "") {
+      registerMessage = "There is field with null string";
     } else {
-      registerMessage = response["message"];
+      final response =
+          await _service.register(username, password, fullname, email, address);
+      if (response["error"] != null) {
+        registerMessage = response["error"];
+      } else {
+        registerMessage = response["message"];
+      }
     }
     loading = false;
     notifyListeners();

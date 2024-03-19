@@ -3,53 +3,48 @@ import 'package:pokopedia/provider/user_provider.dart';
 import 'package:pokopedia/widgets/poko_app_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../styles/styles.dart';
 import '../widgets/alert_dialog.dart';
 
-class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  String oldPassword = "";
-  String newPassword = "";
-  String confirmNewPassword = "";
-  final oldPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmNewPasswordController = TextEditingController();
+class _RegisterPageState extends State<RegisterPage> {
+  String username = "";
+  String fullname = "";
+  String email = "";
+  String password = "";
+  String address = "";
 
-  onButtonChangePassword() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<UserProvider>(context, listen: false).changePassword(
-          oldPassword, newPassword, confirmNewPassword);
-    });
-    oldPasswordController.clear();
-    newPasswordController.clear();
-    confirmNewPasswordController.clear();
+  void onButtonRegister() {
+    Provider.of<UserProvider>(context, listen: false)
+        .register(username, password, fullname, email, address);
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MainPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userState, child) {
-      final changePasswordMessage = userState.changePasswordMessage;
-      if (changePasswordMessage != null) {
+      final registerMessage = userState.registerMessage;
+      if (registerMessage != null) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) {
                 return AlertMessage(
-                    titleMessage: "Message",
-                    contentMessage: changePasswordMessage);
+                    titleMessage: "Message", contentMessage: registerMessage);
               });
           Provider.of<UserProvider>(context, listen: false).updateMessage();
         });
       }
       return Scaffold(
         appBar: const PokoAppBar3(
-          title: "Edit Profile",
+          title: "Register",
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -59,10 +54,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
-                    controller: oldPasswordController,
-                    obscureText: true,
                     onChanged: (text) {
-                      oldPassword = text;
+                      fullname = text;
                     },
                     style: TextStyle(
                         color: navy(),
@@ -73,7 +66,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         Icons.card_membership_rounded,
                         color: navy(),
                       ),
-                      labelText: 'Old Password',
+                      labelText: 'Fullname',
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -85,10 +78,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
-                    controller: newPasswordController,
-                    obscureText: true,
                     onChanged: (text) {
-                      newPassword = text;
+                      username = text;
                     },
                     style: TextStyle(
                         color: navy(),
@@ -99,7 +90,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         Icons.account_box_rounded,
                         color: navy(),
                       ),
-                      labelText: 'New Password',
+                      labelText: 'Username',
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -111,10 +102,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
-                    controller: confirmNewPasswordController,
-                    obscureText: true,
                     onChanged: (text) {
-                      confirmNewPassword = text;
+                      email = text;
                     },
                     style: TextStyle(
                         color: navy(),
@@ -125,7 +114,56 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         Icons.alternate_email_rounded,
                         color: navy(),
                       ),
-                      labelText: 'Confirm New Password ',
+                      labelText: 'Email',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: TextFormField(
+                    onChanged: (text) {
+                      password = text;
+                    },
+                    obscureText: true,
+                    style: TextStyle(
+                        color: navy(),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.lock_rounded,
+                        color: navy(),
+                      ),
+                      labelText: 'Password',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: TextFormField(
+                    onChanged: (text) {
+                      address = text;
+                    },
+                    style: TextStyle(
+                        color: navy(),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.location_on_rounded,
+                        color: navy(),
+                      ),
+                      labelText: 'Address',
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -138,7 +176,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   width: MediaQuery.of(context).size.width,
                   child: TextButton(
-                    onPressed: () => onButtonChangePassword(),
+                    onPressed: onButtonRegister,
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(red()),
                         shape: const MaterialStatePropertyAll(
@@ -151,7 +189,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     child: const Padding(
                       padding: EdgeInsets.all(9.0),
                       child: Text(
-                        "Save",
+                        "Register",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

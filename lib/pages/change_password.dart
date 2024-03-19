@@ -6,43 +6,50 @@ import 'package:provider/provider.dart';
 import '../styles/styles.dart';
 import '../widgets/alert_dialog.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  String username = "";
-  String fullname = "";
-  String email = "";
-  String password = "";
-  String address = "";
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
+  String oldPassword = "";
+  String newPassword = "";
+  String confirmNewPassword = "";
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
 
-  void onButtonRegister() {
-    Provider.of<UserProvider>(context, listen: false)
-        .register(username, password, fullname, email, address);
+  onButtonChangePassword() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<UserProvider>(context, listen: false).changePassword(
+          oldPassword, newPassword, confirmNewPassword);
+    });
+    oldPasswordController.clear();
+    newPasswordController.clear();
+    confirmNewPasswordController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userState, child) {
-      final registerMessage = userState.registerMessage;
-      if (registerMessage != null) {
+      final changePasswordMessage = userState.changePasswordMessage;
+      if (changePasswordMessage != null) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) {
                 return AlertMessage(
-                    titleMessage: "Message", contentMessage: registerMessage);
+                    titleMessage: "Message",
+                    contentMessage: changePasswordMessage);
               });
           Provider.of<UserProvider>(context, listen: false).updateMessage();
         });
       }
       return Scaffold(
         appBar: const PokoAppBar3(
-          title: "Register",
+          title: "Edit Profile",
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -52,82 +59,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
-                    onChanged: (text) {
-                      username = text;
-                    },
-                    style: TextStyle(
-                        color: navy(),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.card_membership_rounded,
-                        color: navy(),
-                      ),
-                      labelText: 'Fullname',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                  child: TextFormField(
-                    onChanged: (text) {
-                      fullname = text;
-                    },
-                    style: TextStyle(
-                        color: navy(),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.account_box_rounded,
-                        color: navy(),
-                      ),
-                      labelText: 'Username',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                  child: TextFormField(
-                    onChanged: (text) {
-                      email = text;
-                    },
-                    style: TextStyle(
-                        color: navy(),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.alternate_email_rounded,
-                        color: navy(),
-                      ),
-                      labelText: 'Email',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                  child: TextFormField(
-                    onChanged: (text) {
-                      password = text;
-                    },
+                    controller: oldPasswordController,
                     obscureText: true,
+                    onChanged: (text) {
+                      oldPassword = text;
+                    },
                     style: TextStyle(
                         color: navy(),
                         fontSize: 18,
@@ -137,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Icons.lock_rounded,
                         color: navy(),
                       ),
-                      labelText: 'Password',
+                      labelText: 'Old Password',
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -149,8 +85,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: TextFormField(
+                    controller: newPasswordController,
+                    obscureText: true,
                     onChanged: (text) {
-                      address = text;
+                      newPassword = text;
                     },
                     style: TextStyle(
                         color: navy(),
@@ -158,10 +96,36 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.w600),
                     decoration: InputDecoration(
                       prefixIcon: Icon(
-                        Icons.location_on_rounded,
+                        Icons.lock_open_rounded,
                         color: navy(),
                       ),
-                      labelText: 'Address',
+                      labelText: 'New Password',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: TextFormField(
+                    controller: confirmNewPasswordController,
+                    obscureText: true,
+                    onChanged: (text) {
+                      confirmNewPassword = text;
+                    },
+                    style: TextStyle(
+                        color: navy(),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.lock_reset_outlined,
+                        color: navy(),
+                      ),
+                      labelText: 'Confirm New Password ',
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -174,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   width: MediaQuery.of(context).size.width,
                   child: TextButton(
-                    onPressed: onButtonRegister,
+                    onPressed: () => onButtonChangePassword(),
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(red()),
                         shape: const MaterialStatePropertyAll(
@@ -187,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: const Padding(
                       padding: EdgeInsets.all(9.0),
                       child: Text(
-                        "Register",
+                        "Save",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

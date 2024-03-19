@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import '../models/product.dart';
 import '../models/payment.dart';
 
 class PaymentService {

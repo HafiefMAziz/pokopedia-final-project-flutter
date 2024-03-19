@@ -75,7 +75,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width * 0.59,
+                      width: MediaQuery.of(context).size.width * 0.59,
                       padding: const EdgeInsets.fromLTRB(18, 15, 10, 15),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,16 +83,25 @@ class _TransactionListPageState extends State<TransactionListPage> {
                           children: [
                             Subtitle(
                                 text: transaction.product.name, fontSize: 18),
-                            Text(
-                              CurrencyFormat.convertToIdr(
-                                  transaction.product.price, 0),
-                              style: TextStyle(color: navy(), fontSize: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  CurrencyFormat.convertToIdr(
+                                      transaction.product.price, 0),
+                                  style: TextStyle(color: navy(), fontSize: 15),
+                                ),
+                                Text(
+                                  "x${transaction.productCount}",
+                                  style: TextStyle(color: navy(), fontSize: 15),
+                                ),
+                              ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "x${transaction.productCount}",
+                                  transaction.createdAt,
                                   style: TextStyle(color: navy(), fontSize: 15),
                                 ),
                                 Text(

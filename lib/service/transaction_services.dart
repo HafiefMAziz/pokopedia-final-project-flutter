@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import '../models/payment.dart';
 import '../models/product.dart';
 import '../models/transaction.dart';
@@ -33,6 +34,7 @@ class TransactionService {
             productCount: transaction["productCount"],
             status: transaction["status"],
             product: product,
+            createdAt: DateFormat('dd/MM/yyyy').format(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(transaction["createdAt"])),
             payment: Payment(
                 id: transaction["payment"]["id"],
                 name: transaction["payment"]["name"]),
@@ -70,6 +72,7 @@ class TransactionService {
           productCount: dataTransaction["productCount"],
           userId: dataTransaction["userId"],
           status: dataTransaction["status"],
+            createdAt: DateFormat('dd/MM/yyyy').format(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(dataTransaction["createdAt"])),
           product: Product(
               id: dataProduct["id"],
               userId: dataProduct["userId"],

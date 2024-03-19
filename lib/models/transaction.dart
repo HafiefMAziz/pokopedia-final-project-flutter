@@ -8,6 +8,7 @@ class Transaction {
   final int productCount;
   final Payment payment;
   final String status;
+  final String createdAt;
 
   Transaction({
     required this.id,
@@ -16,5 +17,6 @@ class Transaction {
     required this.productCount,
     required this.payment,
     required this.status,
+    required this.createdAt,
   });
 }
